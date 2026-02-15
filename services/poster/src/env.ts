@@ -20,23 +20,21 @@ export interface PosterEnv {
   batchSize: number;
 }
 
+const requireEnv = (value: string | undefined, name: string): string => {
+  if (!value) {
+    throw new Error(`Missing required env var for poster worker: ${name}`);
+  }
+  return value;
+};
+
 /**
  * Reads and validates required poster environment variables.
  */
 export const getPosterEnv = (): PosterEnv => {
-  const databaseUrl = process.env.DATABASE_URL;
-  const tgBotToken = process.env.TG_BOT_TOKEN;
-  const tgChannelId = process.env.TG_CHANNEL_ID;
+  const databaseUrl = requireEnv(process.env.DATABASE_URL, "DATABASE_URL");
+  const tgBotToken = requireEnv(process.env.TG_BOT_TOKEN, "TG_BOT_TOKEN");
+  const tgChannelId = requireEnv(process.env.TG_CHANNEL_ID, "TG_CHANNEL_ID");
   const batchSizeRaw = process.env.POSTER_BATCH_SIZE ?? "10";
-
-  const missing: string[] = [];
-  if (!databaseUrl) missing.push("DATABASE_URL");
-  if (!tgBotToken) missing.push("TG_BOT_TOKEN");
-  if (!tgChannelId) missing.push("TG_CHANNEL_ID");
-
-  if (missing.length > 0) {
-    throw new Error(`Missing required env vars for poster worker: ${missing.join(", ")}`);
-  }
 
   const batchSize = Number(batchSizeRaw);
   if (!Number.isInteger(batchSize) || batchSize <= 0) {
