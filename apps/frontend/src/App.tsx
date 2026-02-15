@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchArticles, type ArticleItem } from "./api";
+import type { ArticleDto } from "@prolixy/shared";
+import { fetchArticles } from "./api";
 import styles from "./App.module.css";
 
 export const App = (): JSX.Element => {
-  const [items, setItems] = useState<readonly ArticleItem[]>([]);
+  const [items, setItems] = useState<readonly ArticleDto[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
