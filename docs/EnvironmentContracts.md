@@ -27,3 +27,7 @@ Define required environment variables for each deployable service.
 
 ## Frontend (`apps/frontend`)
 - `VITE_API_BASE_URL` - API base URL injected at build time (`vite build`).
+
+## Runtime preference storage (frontend)
+- `prolixy.theme` - persisted UI theme mode (`light` or `dark`) in browser `localStorage`.
+- `prolixy.language` - persisted UI language (`en` or `ru`) in browser `localStorage`.
