@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-prolixy}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-prolixy}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/prolixy?schema=public}
+      PORT: ${PORT:-3000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:3000
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+  scrapper:
+    build:
+      context: .
+      dockerfile: services/scrapper/Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/prolixy?schema=public}
+      TG_BOT_TOKEN: ${TG_BOT_TOKEN:-local-dev-token}
+      TG_CHANNEL_ID: ${TG_CHANNEL_ID:-local-channel}
+      SCRAPPER_SOURCE_URL: ${SCRAPPER_SOURCE_URL:-https://example.com/feed}
+      SCRAPPER_USER_AGENT: ${SCRAPPER_USER_AGENT:-ProlixyBot/1.0}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  poster:
+    build:
+      context: .
+      dockerfile: services/poster/Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/prolixy?schema=public}
+      TG_BOT_TOKEN: ${TG_BOT_TOKEN:-local-dev-token}
+      TG_CHANNEL_ID: ${TG_CHANNEL_ID:-local-channel}
+      POSTER_BATCH_SIZE: ${POSTER_BATCH_SIZE:-10}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  postgres_data:

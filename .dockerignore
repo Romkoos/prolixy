@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+.git
+.gitignore
+.cursor
+ai-plans
+docs
+*.md
+.env
+.env.*
+docker-compose.yml

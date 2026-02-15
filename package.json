@@ -1,0 +1,28 @@
+{
+  "name": "prolixy",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/shared && npm run prisma:generate && npm run build -w apps/api && npm run build -w services/scrapper && npm run build -w services/poster && npm run build -w apps/frontend",
+    "dev:api": "npm run dev -w apps/api",
+    "dev:frontend": "npm run dev -w apps/frontend",
+    "dev:scrapper": "npm run dev -w services/scrapper",
+    "dev:poster": "npm run dev -w services/poster",
+    "prisma:generate": "prisma generate --schema database/prisma/schema.prisma",
+    "prisma:migrate:dev": "prisma migrate dev --schema database/prisma/schema.prisma",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema database/prisma/schema.prisma",
+    "prisma:seed": "tsx database/src/seed.ts"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.5",
+    "pg": "^8.16.3",
+    "prisma": "^6.4.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}
