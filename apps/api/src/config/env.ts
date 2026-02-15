@@ -13,6 +13,7 @@ dotenv.config({ path: rootEnvPath });
 export interface ApiEnv {
   port: number;
   databaseUrl: string;
+  frontendOrigins: readonly string[];
 }
 
 /**
@@ -21,6 +22,7 @@ export interface ApiEnv {
 export const getApiEnv = (): ApiEnv => {
   const portRaw = process.env.PORT ?? "3000";
   const databaseUrl = process.env.DATABASE_URL;
+  const frontendOriginsRaw = process.env.FRONTEND_ORIGINS ?? "";
 
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is required for API service.");
@@ -31,5 +33,16 @@ export const getApiEnv = (): ApiEnv => {
     throw new Error("PORT must be a positive integer.");
   }
 
-  return { port, databaseUrl };
+  const defaults: readonly string[] = [
+    "http://localhost:5173",
+    "http://localhost:5175",
+    "https://prolixyfrontend-production.up.railway.app"
+  ];
+  const configured = frontendOriginsRaw
+    .split(",")
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+  const frontendOrigins = configured.length > 0 ? configured : [...defaults];
+
+  return { port, databaseUrl, frontendOrigins };
 };

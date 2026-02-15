@@ -10,6 +10,7 @@ Define required environment variables for each deployable service.
 ## API (`apps/api`)
 - `PORT` - HTTP port for API server.
 - `DATABASE_URL` - PostgreSQL DSN used by Prisma.
+- `FRONTEND_ORIGINS` - comma-separated allowed browser origins for CORS (for example localhost and Railway frontend domain).
 
 ## Scrapper (`services/scrapper`)
 - `DATABASE_URL` - PostgreSQL DSN used by Prisma.

@@ -7,7 +7,7 @@ const prisma = new PrismaClient({
   datasourceUrl: env.databaseUrl
 });
 
-const app = createApp(prisma);
+const app = createApp(prisma, env.frontendOrigins);
 
 const run = async (): Promise<void> => {
   await prisma.$connect();
