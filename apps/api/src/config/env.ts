@@ -1,6 +1,11 @@
 import dotenv from "dotenv";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 dotenv.config();
+const currentDir = dirname(fileURLToPath(import.meta.url));
+const rootEnvPath = resolve(currentDir, "../../../../.env");
+dotenv.config({ path: rootEnvPath });
 
 /**
  * Typed runtime environment contract for the API service.
