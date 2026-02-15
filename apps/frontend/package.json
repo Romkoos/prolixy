@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "build": "npm run build -w @prolixy/shared && tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
     "start": "serve -s dist -l tcp://0.0.0.0:$PORT"
   },
   "dependencies": {
+    "@prolixy/shared": "*",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.8",
