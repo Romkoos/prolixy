@@ -104,7 +104,7 @@ Environment strategy:
 Revert the monorepo scaffold commit to return to an empty baseline.
 
 ## Open Questions
-- [ ] Confirm preferred package manager: npm (planned), pnpm, or yarn.
+- [x] Confirm preferred package manager: npm.
 - [ ] Confirm repository remote URL for push step.
 - [ ] Confirm Railway service naming conventions/environment variable names.
 
