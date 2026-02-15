@@ -52,7 +52,7 @@ Environment strategy:
 - [x] Step 9: Add root `docker-compose.yml` for local Postgres + all services integration (no standalone `database` runtime service).
 - [x] Step 10: Validate install/build/lint basics and local integration commands.
 - [x] Step 11: Add project docs under `docs/` to describe architecture, env contracts, Prisma workflow, Docker strategy, and deployment model.
-- [ ] Step 12: Initialize git repository and create initial commit.
+- [x] Step 12: Initialize git repository and create initial commit.
 
 ## Files to Modify/Create
 - `package.json` - root npm workspaces and scripts.
